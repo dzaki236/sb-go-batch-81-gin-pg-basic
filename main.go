@@ -44,7 +44,7 @@ func main() {
 	api.DELETE("/bioskop/:id", bioskop.DeleteBioskopHandler)
 
 	// Menjalankan server
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(":8081"); err != nil {
 		log.Fatal("Gagal menjalankan router: ", err)
 	}
 }
