@@ -1,0 +1,432 @@
+{
+    "openapi": "3.1.1",
+    "info": {
+        "title": "REST API Bioskop",
+        "version": "1.0.0",
+        "description": "OpenAPI untuk API pengelolaan data bioskop."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8081/api",
+            "description": "Server lokal"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "operationId": "getApiHome",
+                "summary": "Cek status API",
+                "responses": {
+                    "200": {
+                        "description": "API berjalan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HomeResponse"
+                                },
+                                "example": {
+                                    "message": "API Home berjalan"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bioskop": {
+            "get": {
+                "operationId": "getBioskopList",
+                "summary": "Mendapatkan daftar bioskop",
+                "responses": {
+                    "200": {
+                        "description": "Daftar bioskop berhasil diperoleh",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BioskopListResponse"
+                                },
+                                "example": {
+                                    "message": "Berhasil mendapatkan data",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "nama": "Bioskop Contoh",
+                                            "lokasi": "Bandung",
+                                            "rating": 4.5
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createBioskop",
+                "summary": "Menambahkan bioskop",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BioskopRequest"
+                            },
+                            "example": {
+                                "nama": "Bioskop Contoh",
+                                "lokasi": "Bandung",
+                                "rating": 4.5
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Bioskop berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BioskopResponse"
+                                },
+                                "example": {
+                                    "message": "Berhasil menambahkan bioskop",
+                                    "data": {
+                                        "id": 1,
+                                        "nama": "Bioskop Contoh",
+                                        "lokasi": "Bandung",
+                                        "rating": 4.5
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            }
+        },
+        "/bioskop/{id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/BioskopId"
+                }
+            ],
+            "get": {
+                "operationId": "getBioskopById",
+                "summary": "Mendapatkan detail bioskop",
+                "responses": {
+                    "200": {
+                        "description": "Detail bioskop berhasil diperoleh",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BioskopResponse"
+                                },
+                                "example": {
+                                    "message": "Berhasil mendapatkan data",
+                                    "data": {
+                                        "id": 1,
+                                        "nama": "Bioskop Contoh",
+                                        "lokasi": "Bandung",
+                                        "rating": 4.5
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateBioskop",
+                "summary": "Memperbarui bioskop",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BioskopRequest"
+                            },
+                            "example": {
+                                "nama": "Bioskop Contoh Baru",
+                                "lokasi": "Jakarta",
+                                "rating": 4
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Bioskop berhasil diperbarui (status aktual dari handler)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BioskopResponse"
+                                },
+                                "example": {
+                                    "message": "Berhasil melakukan perubahan bioskop",
+                                    "data": {
+                                        "id": 1,
+                                        "nama": "Bioskop Contoh Baru",
+                                        "lokasi": "Jakarta",
+                                        "rating": 4
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteBioskop",
+                "summary": "Menghapus bioskop",
+                "responses": {
+                    "201": {
+                        "description": "Bioskop berhasil dihapus (status aktual dari handler)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteResponse"
+                                },
+                                "example": {
+                                    "message": "Berhasil menghapus bioskop",
+                                    "data": null
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "BioskopId": {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID bioskop",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "schemas": {
+            "Bioskop": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "nama",
+                    "lokasi",
+                    "rating"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "examples": [
+                            1
+                        ]
+                    },
+                    "nama": {
+                        "type": "string",
+                        "examples": [
+                            "Bioskop Contoh"
+                        ]
+                    },
+                    "lokasi": {
+                        "type": "string",
+                        "examples": [
+                            "Bandung"
+                        ]
+                    },
+                    "rating": {
+                        "type": "number",
+                        "format": "float",
+                        "minimum": 0,
+                        "maximum": 5,
+                        "examples": [
+                            4.5
+                        ]
+                    }
+                }
+            },
+            "BioskopRequest": {
+                "type": "object",
+                "required": [
+                    "nama",
+                    "lokasi"
+                ],
+                "properties": {
+                    "nama": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Nama bioskop; tidak boleh kosong atau hanya spasi."
+                    },
+                    "lokasi": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Lokasi bioskop; tidak boleh kosong atau hanya spasi."
+                    },
+                    "rating": {
+                        "type": "number",
+                        "format": "float",
+                        "minimum": 0,
+                        "maximum": 5,
+                        "default": 0
+                    }
+                }
+            },
+            "ApiResponse": {
+                "type": "object",
+                "required": [
+                    "message",
+                    "data"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {}
+                }
+            },
+            "BioskopResponse": {
+                "type": "object",
+                "required": [
+                    "message",
+                    "data"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Bioskop"
+                    }
+                }
+            },
+            "BioskopListResponse": {
+                "type": "object",
+                "required": [
+                    "message",
+                    "data"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Bioskop"
+                        }
+                    }
+                }
+            },
+            "DeleteResponse": {
+                "type": "object",
+                "required": [
+                    "message",
+                    "data"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "null"
+                    }
+                }
+            },
+            "HomeResponse": {
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "examples": [
+                            "API Home berjalan"
+                        ]
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "required": [
+                    "message",
+                    "data"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "ValidationError": {
+                "description": "Input tidak valid, termasuk nama/lokasi kosong atau rating di luar rentang 0 sampai 5.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        },
+                        "examples": {
+                            "requiredFields": {
+                                "value": {
+                                    "message": "Nama dan lokasi wajib diisi",
+                                    "data": null
+                                }
+                            },
+                            "ratingRange": {
+                                "value": {
+                                    "message": "Rating harus antara 0 sampai 5",
+                                    "data": null
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ServerError": {
+                "description": "Kesalahan database atau data tidak ditemukan. Implementasi saat ini mengembalikan status 500 untuk kondisi data tidak ditemukan.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        },
+                        "example": {
+                            "message": "Gagal mengambil data bioskop",
+                            "data": "Data tidak tersedia"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
